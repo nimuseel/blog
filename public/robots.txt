@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.nimuseel.dev
+
+# Sitemaps
+Sitemap: https://www.nimuseel.dev/sitemap.xml
