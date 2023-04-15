@@ -8,7 +8,7 @@ export const Career = () => {
       <Grid.Container gap={2} justify="center">
         {careerList.map((item) => (
           <Grid xs key={item.companyName}>
-            <Card variant="bordered" css={{ padding: '24px' }}>
+            <Card variant="bordered" css={{ padding: '20px' }}>
               <Card.Header style={{ padding: '12px 0' }}>
                 <div
                   style={{
@@ -18,7 +18,7 @@ export const Career = () => {
                   }}
                 >
                   <div
-                    style={{ display: 'flex', alignItems: 'center', gap: 16 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 12 }}
                   >
                     <div
                       style={{
