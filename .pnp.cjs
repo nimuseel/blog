@@ -37,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.0.33"],\
             ["eslint-config-prettier", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:8.8.0"],\
             ["next", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:13.3.0"],\
+            ["next-seo", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:6.0.0"],\
             ["nextra", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:2.3.0"],\
             ["nextra-theme-blog", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:2.3.0"],\
             ["prettier", "npm:2.8.7"],\
@@ -5179,6 +5180,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["next-seo", [\
+        ["npm:6.0.0", {\
+          "packageLocation": "./.yarn/cache/next-seo-npm-6.0.0-d1aee42f79-aa986b3731.zip/node_modules/next-seo/",\
+          "packageDependencies": [\
+            ["next-seo", "npm:6.0.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:6.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/next-seo-virtual-fa2c504d18/0/cache/next-seo-npm-6.0.0-d1aee42f79-aa986b3731.zip/node_modules/next-seo/",\
+          "packageDependencies": [\
+            ["next-seo", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:6.0.0"],\
+            ["@types/next", null],\
+            ["@types/react", "npm:18.0.33"],\
+            ["@types/react-dom", null],\
+            ["next", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:13.3.0"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/next",\
+            "@types/react-dom",\
+            "@types/react",\
+            "next",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["next-themes", [\
         ["npm:0.2.1", {\
           "packageLocation": "./.yarn/cache/next-themes-npm-0.2.1-16a440cf6e-ebc248b956.zip/node_modules/next-themes/",\
@@ -5313,6 +5344,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.0.33"],\
             ["eslint-config-prettier", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:8.8.0"],\
             ["next", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:13.3.0"],\
+            ["next-seo", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:6.0.0"],\
             ["nextra", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:2.3.0"],\
             ["nextra-theme-blog", "virtual:68f67cc6439c4f3ec88de220f8673a995455c0fbaad81f96116866edaecdc2dc42b1dced2c3d71618e59c71fabc442f1f9d729158f2c37abfd42c2f0f137bb1f#npm:2.3.0"],\
             ["prettier", "npm:2.8.7"],\
