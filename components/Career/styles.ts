@@ -1,11 +1,4 @@
 import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-
-const CareerSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-`;
 
 export const CompanyAndProjectPeriod = css`
   span {
@@ -14,7 +7,3 @@ export const CompanyAndProjectPeriod = css`
     color: gray;
   }
 `;
-
-export default {
-  CareerSection,
-};
