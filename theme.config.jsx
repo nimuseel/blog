@@ -11,10 +11,6 @@ export default {
   ),
   postFooter: null,
   darkMode: true,
-  toc: {
-    float: true,
-    position: 'right',
-  },
   navs: [
     {
       name: 'Github',
