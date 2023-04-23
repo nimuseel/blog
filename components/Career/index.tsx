@@ -31,8 +31,8 @@ export const Career = () => {
                       <Image
                         src={
                           item.companyName === '레몬베이스'
-                            ? '/images/lemonbase.png'
-                            : '/images/zent.jpeg'
+                            ? '/assets/images/lemonbase.png'
+                            : '/assets/images/zent.jpeg'
                         }
                         alt="company_logo"
                         style={{ borderRadius: '8px' }}
