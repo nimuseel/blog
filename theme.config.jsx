@@ -13,7 +13,7 @@ export default {
   darkMode: true,
   navs: [
     {
-      name: 'Github',
+      name: 'GitHub',
       url: 'https://github.com/nimuseel/',
     },
   ],

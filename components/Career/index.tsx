@@ -36,6 +36,8 @@ export const Career = () => {
                         }
                         alt="company_logo"
                         style={{ borderRadius: '8px' }}
+                        width={48}
+                        height={48}
                       />
                     </div>
                     <div>
