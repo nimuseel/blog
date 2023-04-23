@@ -7,8 +7,12 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": [
-      "error"
+    "prettier/prettier": "error",
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        "allowObject": true
+      }
     ]
   }
 }

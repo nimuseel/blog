@@ -1,6 +1,7 @@
 import { Button, Card, Grid, Row } from '@nextui-org/react';
 import Link from 'next/link';
 import { careerList } from './data';
+import Image from 'next/image';
 
 export const Career = () => {
   return (
@@ -27,7 +28,7 @@ export const Career = () => {
                         width: '48px',
                       }}
                     >
-                      <img
+                      <Image
                         src={
                           item.companyName === '레몬베이스'
                             ? '/images/lemonbase.png'
