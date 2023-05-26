@@ -14,7 +14,11 @@ export const careerList: ICareerItem[] = [
         period: '2022.06 ~',
         description:
           '레몬베이스의 1:1 미팅 기능과 목표 제품을 개발하고 있습니다.',
-        details: ['알림 설정 등의 신규 기능 개발', 'UI/UX 개선 등 제품 고도화'],
+        details: [
+          '알림 설정 등의 신규 기능 개발',
+          'UI/UX 개선 등 제품 고도화',
+          '목표 합의 기능 플로우 개발',
+        ],
       },
       {
         name: '레몬베이스 디자인 시스템(LDS) 개발(LDS Guild)',
@@ -46,6 +50,12 @@ export const careerList: ICareerItem[] = [
           'Context API를 사용해 도메인 내에서 글로벌하게 사용될 상태를 관리했습니다.',
           'Safari 브라우저를 대응해, flex-box layout이 의도대로 동작할 수 있게 처리했습니다.',
         ],
+      },
+      {
+        name: '레몬베이스 프론트엔드 챕터',
+        period: '2021.11 ~',
+        description: '',
+        details: ['SWC 도입, Webpack5 적용 등 프론트엔드 개발 환경 개선'],
       },
     ],
   },
