@@ -1,4 +1,4 @@
-import { CareerProject } from 'components/Career/careerItem';
+import { CareerProject } from 'src/components/Career/careerItem';
 import React from 'react';
 
 interface ProjectDetailsProps {
