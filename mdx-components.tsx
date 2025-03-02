@@ -1,13 +1,13 @@
 import {
-  useMDXComponents as getThemeComponents,
+  useMDXComponents as getBlogMDXComponents,
 } from 'nextra-theme-blog';
 import { MDXComponents } from 'nextra/mdx-components';
 
-const themeComponents = getThemeComponents();
+const blogComponents = getBlogMDXComponents();
 
 export function useMDXComponents(components: MDXComponents) {
   return {
-    ...themeComponents,
+    ...blogComponents,
     ...components,
   };
 }

@@ -1,4 +1,6 @@
-.yarn/*
 .next/
 .env
 node_modules
+_pagefind/
+
+.yarn/cache/
