@@ -1,33 +1,37 @@
 {
   "name": "nimuseel-blog",
   "scripts": {
-    "start": "next dev --port 3003",
+    "dev": "next",
     "build": "next build",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@nextui-org/react": "^1.0.0-beta.12",
-    "@react-stately/collections": "^3.7.0",
-    "@react-stately/menu": "^3.5.1",
-    "next": "^13.3.0",
-    "next-seo": "^6.0.0",
-    "nextra": "^2.4.1",
-    "nextra-theme-blog": "^2.4.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@yarnpkg/pnpify": "^4.1.4",
+    "D": "^1.0.0",
+    "acorn": "^8.14.0",
+    "next": "^15.2.0",
+    "nextra": "^4.2.13",
+    "nextra-theme-blog": "^4.2.13",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sass": "^1.62.0",
-    "typescript": "5.0.4"
+    "typescript": "^5.8.2"
   },
   "devDependencies": {
-    "@types/node": "18.15.11",
-    "@types/react": "18.0.33",
-    "eslint": "^8.38.0",
-    "eslint-config-next": "^13.3.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.8",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@yarnpkg/sdks": "^3.2.1",
+    "eslint": "^9.21.0",
+    "eslint-config-next": "^15.2.0",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^2.8.7"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.7.0",
+  "type": "module"
 }
