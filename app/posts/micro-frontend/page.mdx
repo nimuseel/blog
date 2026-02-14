@@ -1,0 +1,381 @@
+---
+title: Micro Frontend Playground
+tag: [frontend, micro-frontend]
+date: 2026-02-14
+description: Micro Frontend 환경을 구축해 보며 학습합니다.
+---
+
+import Figure from "@/src/components/Figure";
+
+Micro Frontend 환경을 구축해 보며 학습한 내용을 정리해 보려고 한다.
+
+Codex와 함께 프로젝트 구조는 다음과 같이 잡았다.
+
+```bash
+apps/
+  shell/ # Vite + React
+  remote-workspace/ # Vite + React
+  remote-admin/ # Vite + React
+packages/
+  ui/
+  config/
+  contracts/
+```
+
+pnpm workspace와 turborepo를 사용해 모노레포를 구축했으며, apps 하위의 프로젝트들은 Vite + React 환경으로 구성했다.
+
+### corepack
+
+corepack은 Node.js에 내장된 패키지 매니저 관리 도구로, pnpm, yarn, npm 등을 쉽게 설치하고 사용할 수 있게 해준다.
+
+```bash
+corepack enable
+```
+
+이를 통해 여러 사람들이 각자 다른 패키지 매니저 버전을 사용하면서 벌어지는 의존성의 간극을 최소화해 줄 수 있다.
+이는 곧, **개발 환경의 편차를 줄인다**고 볼 수 있다.
+
+### pnpm workspace로 경계 만들기
+
+모노레포 환경을 구축하기 위해 `pnpm-workspace.yaml` 파일에 패키지 정보를 설정한다.
+
+
+```yaml
+packages:
+  - "apps/*"
+  - "packages/*"
+```
+
+### Turbo 설정
+
+`turbo.json` 파일에 **dev**, **build**, **lint** 등의 스크립트를 설정한다.
+
+```jsonc
+{
+	"$schema": "https://turbo.build/schema.json",
+	"tasks": {
+		"dev": {
+			"cache": false, // dev에서 캐싱 쓰지 않기
+			"persistent": true // watch mode
+		},
+		"build": {
+			"dependsOn": ["^build"], // 현재 패키지가 의존하는 상위 패키지들의 build 먼저 실행
+			"outputs": ["dist/**"]
+		},
+		"lint": {
+			"dependsOn": ["^lint"] // 현재 패키지가 의존하는 패키지들의 lint 먼저 실행
+		},
+		"typecheck": {
+			"dependsOn": ["^typecheck"] // 현재 패키지가 의존하는 패키지들의 typecheck 먼저 실행
+		},
+		"clean": {
+			"cache": false
+		}	
+	}
+}
+```
+
+이렇게 각 스크립트마다 무엇이 먼저 실행되어야 하는지 명시적으로 또 자동으로 관리할 수 있다.
+
+### Typescript 설정
+
+Vite + React 앱들을 먼저 만들고, `packages/config`에 공통된 typescript 설정을 적용하기 위해 `tsconfig.base.json`을 만들었다.
+
+```json
+// packages/config/tsconfig.base.json
+
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
+		"strict": true,
+		"skipLibCheck": true,
+		"noEmit": true,
+		"types": []
+	}
+}
+```
+
+각 앱들의 `tsconfig.json`은 `tsconfig.base.json`을 확장한다.
+
+이렇게 기준이 되는 config가 존재하기 때문에 새 앱을 추가하는 상황이라든가, 설정을 변경하고자 할 때 각 앱들에게 안전하게 전파될 수 있겠구나 싶었다.
+
+```json
+// apps/*/tsconfig.json
+
+{
+	"extends": ["../../packages/config/tsconfig.base.json"],
+	"files": [],
+	"references": [
+		{ "path": "./tsconfig.app.json" },
+		{ "path": "./tsconfig.node.json" }
+	],
+	"compilerOptions": {
+		"types": ["vite/client"]
+	},
+	"include": ["src"]
+}
+```
+
+### NPM Scope 적용
+
+`packages/*`에 있는 패키지들을 `@repo/*` 스코프로 선언해서 실제 npm 패키지처럼 사용할 수 있도록 정의했다.
+
+```json
+// packages/*/package.json
+
+{
+  "name": "@repo/contracts",
+  "version": "1.0.0",
+  "private": true,
+  ...
+}
+```
+
+이렇게 설정해 두면 import도 스코프를 활용해 접근할 수 있어 가독성을 높여 주는 것 같다.
+
+```ts
+import { ShellContext } from '@repo/contracts'
+```
+
+### contracts로 shell-remote 결합 줄이기
+
+root가 되는 `shell`은 각 `remote` 앱들이 필요한 정보를 모두 넘기는 것보다는 최소한의 정보만 전달하고, remote는 필요한 데이터를 자체적으로 조회하도록 구성했다.
+
+예를 들면:
+```ts
+export type FeatureFlags = Record<string, boolean>;
+
+export interface ShellContext {
+  userId: string;
+  featureFlags: FeatureFlags;
+}
+```
+
+이렇게 정의해둔 인터페이스를 기반으로 `shell`과 `remote`가 서로 구현 세부사항을 몰라도 되고, 결과적으로 변경의 영향 범위를 줄일 수 있겠다는 점에서 가장 중요한 포인트라고 느껴졌다.
+
+### 중간 점검
+`pnpm dev` 실행 시, `apps/*` 앱들이 모두 잘 띄워지는지 체크
+
+<Figure img="/assets/articles/frontend/micro-frontend/mfa-test.png" alt="test" caption="각 앱들이 모두 잘 띄워진다"/>
+
+여기서 `shell`이 각 remote 앱을 호출해서 렌더링하도록 해야 하기 때문에 본격적으로 Module Federation을 적용한다.
+
+### Module Federation
+
+#### remote 설정
+
+`pnpm add -D @originjs/vite-plugin-federation -w`를 통해 vite plugin을 추가하고, vite.config.ts에 관련 옵션을 추가했다.
+
+```ts
+// apps/remote-*/vite.config.ts
+
+federation({
+  name: "remote_workspace",
+  filename: "remoteEntry.js",
+  exposes: {
+    "./WorkspaceApp": "./src/RemoteRoot.tsx",
+  },
+  shared: ["react", "react-dom"],
+});
+```
+
+- name: shell import prefix
+- filename: shell이 런타임에 읽을 진입점
+- exposes: 외부 공개 모듈
+- shared: 공통 라이브러리 중복 번들링 방지
+
+#### shell 설정
+
+shell에서는 remote 앱들의 엔트리 포인트를 등록했다.
+
+```ts
+// apps/shell/vite.config.ts
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import federation from "@originjs/vite-plugin-federation";
+
+export default defineConfig({
+	plugins: [
+		react(),
+		federation({
+			name: "shell",
+			remotes: {
+				remote_workspace: "http://localhost:5173/assets/remoteEntry.js",
+				remote_admin: "http://localhost:5174/assets/remoteEntry.js",
+			},
+			shared: ["react", "react-dom"],
+		}),
+	],
+});
+```
+
+그리고 `App.tsx`에서 lazy import로 가져와 활용한다.
+
+```tsx
+import { lazy, Suspense } from "react";
+
+const WorkspaceApp = lazy(() => import("remote_workspace/WorkspaceApp"));
+const AdminApp = lazy(() => import("remote_admin/AdminApp"));
+
+function App() {
+	return (
+		<div>
+			<h1>Shell</h1>
+			<Suspense fallback={<div>Loading ...</div>}>
+				<WorkspaceApp />
+				<AdminApp />
+			</Suspense>
+		</div>
+	);
+}
+
+export default App;
+```
+
+#### Remote 앱에 Context 주입
+
+```ts
+// src/shell/mfe/context.ts
+
+import type { ShellContext, Navigation } from "@repo/contracts";
+
+export function createShellContext(navigate: (to: string) => void): ShellContext {
+	return {
+		userId: "louie",
+		featureFlags: {
+			"workspace.newUI": true,
+		},
+		requestNavigation: (nav: Navigation) => {
+			switch (nav.type) {
+				case "go":
+					navigate(nav.to);
+					break;
+				case "back":
+					window.history.back();
+					break;
+				case "openExternal":
+					window.open(nav.url, "_blank", "noopener,noreferrer");
+					break;
+				default:
+					break;
+			}
+		},
+	};
+}
+```
+
+context를 생성하고
+
+```ts
+// packages/contracts/src/index.ts
+
+export type FeatureFlags = Record<string, boolean>; 
+
+export type Navigation =
+	| { type: "go"; to: string }
+	| { type: "back" }
+	| { type: "openExternal"; url: string };
+
+export interface ShellContext {
+	userId: string;
+	featureFlags: FeatureFlags;
+	requestNavigation: (nav: Navigation) => void;
+}
+```
+
+contract를 재정립한 뒤, 실제로 Context를 전달해 단일 렌더링에서 라우팅 기반으로 각 앱에 접근하도록 구성했다.
+
+```tsx
+// apps/shell/src/App.tsx
+
+import { lazy, Suspense, useMemo } from "react";
+import { useNavigate, Routes, Route, Navigate } from "react-router-dom";
+import { createShellContext } from "./mfe/context";
+
+const WorkspaceApp = lazy(() => import("remote_workspace/WorkspaceApp"));
+const AdminApp = lazy(() => import("remote_admin/AdminApp"));
+
+function App() {
+	const navigate = useNavigate();
+
+	const context = useMemo(
+		() => createShellContext((to) => navigate(to)),
+		[navigate],
+	);
+
+  
+
+	return (
+		<div>
+			<h1>Shell</h1>
+			
+			<Suspense fallback={<div>Loading ...</div>}>
+				<Routes>
+					<Route path="/" element={<Navigate to="/workspace" replace/>} />
+
+					<Route path="/workspace/*" element={<WorkspaceApp context={context} />} />
+
+					<Route path="/admin/*" element={<AdminApp context={context} />} />
+
+					<Route path="*" element={<div>404 Not Found</div>} />
+
+				</Routes>
+			</Suspense>
+		</div>
+	);
+}
+
+export default App;
+```
+
+<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+  <Figure img="/assets/articles/frontend/micro-frontend/workspace-route.png" alt="remote-workspace" caption="workspace 경로" />
+  <Figure img="/assets/articles/frontend/micro-frontend/admin-route.png" alt="remote-admin" caption="admin 경로" />
+</div>
+
+### 트러블 슈팅
+
+모든 앱을 dev 환경으로 실행했을 때, `shell`에서 앱들을 불러올 때 404 오류가 발생해서 보니, federation 플러그인이 vite 7을 제대로 지원하지 않는 것 같다는 [이슈](https://github.com/originjs/vite-plugin-federation/issues/732)가 있다고 한다.
+
+내가 활용한 버전은 다음과 같았다.
+
+```bash
+"packageManager": "pnpm@10.16.0"
+
+"@originjs/vite-plugin-federation": "^1.4.1",
+"vite": "^7.3.1"
+```
+
+vite 버전을 낮추는 법도 있지만, 최신 버전에서 동작시키기 위해 remote 앱들을 build한 후, preview로 띄우도록 해서 해결했다.
+
+
+
+```bash
+# build
+pnpm --filter remote-workspace build
+pnpm --filter remote-admin build
+
+# serve preview
+pnpm --filter remote-workspace preview
+pnpm --filter remote-admin preview
+
+# shell dev
+pnpm --filter shell dev
+```
+
+### 마무리
+
+이렇게 찍먹 수준으로 Micro Frontend 환경을 구축해 보았는데, 생각보다 많이 복잡하고 개념을 잡기 어려웠다.
+
+하지만 
+- 패키지 매니저 및 빌드 순서 같은 운영 방식 통일
+- contracts 중심의 인터페이스 설계
+- shell, remote 간의 책임 분리
+
+이 규칙들 덕분에 앞으로 기능을 추가할 때 어떻게 추가하면 될지 감을 어느정도 잡을 수 있었고,
+micro frontend는 여러 앱들의 경계를 어떻게 설계하는지에 가깝다는 것을 느끼며 대규모 프로젝트에 적용하면 효용이 느껴지겠다고 생각했다.
